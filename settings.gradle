@@ -1,0 +1,2 @@
+include ':example', ':stompclient'
+rootProject.name='ChatApplication'
