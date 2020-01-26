@@ -1,2 +1,2 @@
-include ':example', ':stompclient'
+include ':app', ':stompclient'
 rootProject.name='ChatApplication'

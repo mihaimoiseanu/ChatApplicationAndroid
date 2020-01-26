@@ -44,8 +44,8 @@ class StompClient(
 	var legacyWhitespace = false
 	private var headers: List<StompHeader>? = null
 
-	private var messageChannel = Channel<StompMessage>()
-	var lifecycleChannel = Channel<LifecycleEvent>()
+	private var messageChannel = Channel<StompMessage>(Channel.UNLIMITED)
+	var lifecycleChannel = Channel<LifecycleEvent>(Channel.UNLIMITED)
 	var connectionChannel = Channel<Boolean>()
 
 	private var channelsMap = ConcurrentHashMap<String, Channel<StompMessage>>()

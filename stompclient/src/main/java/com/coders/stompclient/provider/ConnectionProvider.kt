@@ -14,8 +14,8 @@ abstract class ConnectionProvider : CoroutineScope {
 	override val coroutineContext: CoroutineContext
 		get() = Dispatchers.IO + parentJob
 
-	val lifecycleChannel = Channel<LifecycleEvent>()
-	val messageChannel = Channel<String>()
+	val lifecycleChannel = Channel<LifecycleEvent>(Channel.UNLIMITED)
+	val messageChannel = Channel<String>(Channel.UNLIMITED)
 
 	abstract val isConnected: Boolean
 
