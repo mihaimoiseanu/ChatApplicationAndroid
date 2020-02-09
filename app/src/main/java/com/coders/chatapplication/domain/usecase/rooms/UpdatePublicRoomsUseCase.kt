@@ -12,7 +12,7 @@ class UpdatePublicRoomsUseCase(
 ) : UseCase<NoParams, Unit>() {
 	override suspend fun execute(params: NoParams): Either<Failure, Unit> {
 		return try {
-			roomRepository.updatePublicRooms()
+			roomRepository.updateRooms()
 			Either.Right(Unit)
 		} catch (e: Exception) {
 			if (e is IOException) {

@@ -14,7 +14,7 @@ class GetRoomsUseCase(private val roomRepository: RoomRepository) :
 
 	override suspend fun execute(params: NoParams): Either<Failure, Flow<List<RoomModel>>> {
 		return try {
-			val rooms = roomRepository.getMyRooms()
+			val rooms = roomRepository.getRooms()
 			Either.Right(rooms)
 		} catch (e: Exception) {
 			if (e is IOException) {

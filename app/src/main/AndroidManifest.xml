@@ -22,9 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".presentation.ui.register.RegisterActivity" />
         <activity android:name="com.coders.chatapplication.presentation.ui.chat.ChatActivity" />
         <activity android:name="com.coders.chatapplication.presentation.ui.rooms.RoomsActivity" />
         <activity android:name="com.coders.chatapplication.presentation.ui.login.LoginActivity" />
+        <activity android:name=".presentation.ui.searchfriends.SearchFriendsActivity" />
     </application>
 
 </manifest>

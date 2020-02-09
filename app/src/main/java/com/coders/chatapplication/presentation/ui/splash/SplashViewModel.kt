@@ -7,8 +7,8 @@ import com.coders.chatapplication.domain.model.UserModel
 import com.coders.chatapplication.domain.usecase.auth.CheckSessionUseCase
 import com.coders.chatapplication.presentation.commons.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class SplashViewModel(
 	private val checkSessionUseCase: CheckSessionUseCase
@@ -17,17 +17,18 @@ class SplashViewModel(
 	val onSuccess = MutableLiveData<Boolean>()
 
 	fun checkSession() {
-		viewModelScope.launch {
-			withContext(Dispatchers.IO) {
-				checkSessionUseCase(viewModelScope, NoParams) {
-					it.either(::handleFailure, ::handleSuccess)
-				}
+		viewModelScope.launch(Dispatchers.IO) {
+			checkSessionUseCase(viewModelScope, NoParams) {
+				it.either(::handleFailure, ::handleSuccess)
 			}
 		}
 	}
 
 	private fun handleSuccess(userModel: UserModel) {
-		onSuccess.postValue(true)
+		viewModelScope.launch {
+			delay(2_000)
+			onSuccess.postValue(true)
+		}
 	}
 
 }

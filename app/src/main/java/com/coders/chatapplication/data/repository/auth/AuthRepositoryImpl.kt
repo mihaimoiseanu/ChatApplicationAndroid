@@ -1,5 +1,7 @@
 package com.coders.chatapplication.data.repository.auth
 
+import com.coders.chatapplication.data.net.asDomain
+import com.coders.chatapplication.data.net.asResponse
 import com.coders.chatapplication.data.net.interceptors.AuthInterceptor
 import com.coders.chatapplication.data.repository.auth.datasource.RemoteDataSource
 import com.coders.chatapplication.data.sharedprefs.SharedPrefs
@@ -30,5 +32,9 @@ class AuthRepositoryImpl(
 		val response = remoteDataSource.getPrincipal().asDomain()
 		chatManager.connect()
 		return response
+	}
+
+	override suspend fun register(params: UserModel): UserModel {
+		return remoteDataSource.register(params.asResponse()).asDomain()
 	}
 }

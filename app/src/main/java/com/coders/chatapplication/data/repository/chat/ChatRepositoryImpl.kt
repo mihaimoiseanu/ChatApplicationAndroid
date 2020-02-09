@@ -19,7 +19,7 @@ class ChatRepositoryImpl(
 			.map { list ->
 				list.map { message ->
 					MessageModel(
-						message.id,
+						message.messageId,
 						message.message,
 						message.senderId,
 						message.sentAt

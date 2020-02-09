@@ -3,13 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".presentation.ui.splash.SplashActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fontFamily="@font/dancing_script"
         android:gravity="center"
         android:text="Simple Chat"
+        android:textColor="@android:color/white"
         android:textSize="50sp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

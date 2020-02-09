@@ -1,5 +1,6 @@
 package com.coders.chatapplication.presentation.ui.rooms
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.coders.chatapplication.R
 import com.coders.chatapplication.domain.model.RoomModel
 import com.coders.chatapplication.presentation.commons.AsyncDiffUtil
+import com.coders.chatapplication.presentation.ui.views.AvatarImageView
 
 class RoomsAdapter(
-	private val onItemClicked: (RoomModel) -> Unit
+	private val onItemClicked: (RoomModel) -> Unit,
+	private val thisUserId: Long
 ) : RecyclerView.Adapter<RoomsAdapter.ViewHolder>() {
 
 	private val diffUtil = AsyncDiffUtil(this, object : DiffUtil.ItemCallback<RoomModel>() {
@@ -42,12 +45,18 @@ class RoomsAdapter(
 
 	inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+		@SuppressLint("SetTextI18n")
 		fun bindView(roomModel: RoomModel) {
-			(itemView as TextView).text = roomModel.name
+			val otherUser =
+				roomModel.users?.find { it.id != thisUserId } ?: throw Exception("WTF happened")
+			itemView.apply {
+				findViewById<AvatarImageView>(R.id.avatar).setText("${otherUser.firstName?.get(0)}")
+				findViewById<TextView>(R.id.name).text =
+					"${otherUser.firstName} ${otherUser.lastName}"
+			}
 			itemView.setOnClickListener {
 				onItemClicked(roomModel)
 			}
 		}
-
 	}
 }

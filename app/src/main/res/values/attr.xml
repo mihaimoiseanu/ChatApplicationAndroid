@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AvatarView">
+        <attr name="avatar_shape" format="string" />
+        <attr name="avatar_size" format="dimension" />
+        <attr name="corner_radius" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="border_width" format="dimension" />
+    </declare-styleable>
+</resources>

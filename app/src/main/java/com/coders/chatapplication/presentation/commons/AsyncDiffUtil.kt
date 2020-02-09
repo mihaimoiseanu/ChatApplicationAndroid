@@ -139,6 +139,10 @@ class AsyncDiffUtil<T>(
 			.launchIn(this)
 	}
 
+	open fun onOperationFinished() {
+		//no-op
+	}
+
 
 	private fun diffUtilCallback(
 		oldList: List<T>,

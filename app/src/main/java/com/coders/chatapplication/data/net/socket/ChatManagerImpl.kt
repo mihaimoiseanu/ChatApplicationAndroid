@@ -30,7 +30,7 @@ class ChatManagerImpl(
 
 	private val stompClient = Stomp.over(
 		type = ConnectionProvider.Type.OKHTTP,
-		uri = "ws://192.168.0.118:8080/websocket",
+		uri = "ws://192.168.1.149:8080/websocket",
 		okHttpClient = okHttpClient
 	)
 

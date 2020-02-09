@@ -13,4 +13,8 @@ class RemoteDataSource(private val authService: AuthService) {
 	}
 
 	suspend fun getPrincipal(): UserResponse = authService.getPrincipal()
+
+	suspend fun register(userResponse: UserResponse): UserResponse {
+		return authService.register(userResponse)
+	}
 }

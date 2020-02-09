@@ -5,17 +5,20 @@ import com.coders.chatapplication.BuildConfig
 import com.coders.chatapplication.data.db.ChatDatabase
 import com.coders.chatapplication.data.net.api.AuthService
 import com.coders.chatapplication.data.net.api.RoomsService
+import com.coders.chatapplication.data.net.api.UserService
 import com.coders.chatapplication.data.net.interceptors.AuthInterceptor
 import com.coders.chatapplication.data.net.socket.ChatManagerImpl
 import com.coders.chatapplication.data.repository.auth.AuthRepositoryImpl
 import com.coders.chatapplication.data.repository.auth.datasource.RemoteDataSource
 import com.coders.chatapplication.data.repository.chat.ChatRepositoryImpl
 import com.coders.chatapplication.data.repository.rooms.RoomRepositoryImpl
+import com.coders.chatapplication.data.repository.users.UserRepositoryImpl
 import com.coders.chatapplication.data.sharedprefs.SharedPrefs
 import com.coders.chatapplication.domain.repository.AuthRepository
 import com.coders.chatapplication.domain.repository.ChatManager
 import com.coders.chatapplication.domain.repository.ChatRepository
 import com.coders.chatapplication.domain.repository.RoomRepository
+import com.coders.chatapplication.domain.repository.UserRepository
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
@@ -38,6 +41,10 @@ val dataModule = module {
 			get(),
 			get()
 		)
+	}
+
+	single<UserRepository> {
+		UserRepositoryImpl(get())
 	}
 
 	single<ChatRepository> {
@@ -66,6 +73,9 @@ val dbModule = module {
 
 	single {
 		get<ChatDatabase>().roomDao()
+	}
+	single {
+		get<ChatDatabase>().userRoomDao()
 	}
 
 }
@@ -101,6 +111,10 @@ val networkingModule = module {
 
 	single {
 		get<Retrofit>().create(RoomsService::class.java)
+	}
+
+	single {
+		get<Retrofit>().create(UserService::class.java)
 	}
 
 	single<ChatManager> {

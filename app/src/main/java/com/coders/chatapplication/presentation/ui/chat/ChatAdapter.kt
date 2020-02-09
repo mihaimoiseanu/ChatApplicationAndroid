@@ -9,11 +9,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.coders.chatapplication.R
 import com.coders.chatapplication.domain.model.MessageModel
+import com.coders.chatapplication.domain.model.UserModel
 import com.coders.chatapplication.presentation.commons.AsyncDiffUtil
 
 class ChatAdapter(
 	private val selfId: Long
 ) : RecyclerView.Adapter<ChatAdapter.ViewHolder>() {
+
+	var users: List<UserModel> = listOf()
 
 	private val diffUtil = AsyncDiffUtil(this, object : DiffUtil.ItemCallback<MessageModel>() {
 		override fun areItemsTheSame(oldItem: MessageModel, newItem: MessageModel): Boolean {
@@ -63,7 +66,8 @@ class ChatAdapter(
 
 		fun bindItem(messageModel: MessageModel) {
 			itemView.findViewById<TextView>(R.id.text).text = messageModel.message
-			itemView.findViewById<TextView>(R.id.author).text = "${messageModel.sender}"
+			itemView.findViewById<TextView>(R.id.author).text =
+				"${users.find { it.id == messageModel.sender }?.firstName}"
 		}
 
 		fun clearView() {

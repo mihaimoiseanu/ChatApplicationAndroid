@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "messages")
 data class MessageEntity(
-	@PrimaryKey val id: Long,
+	@PrimaryKey val messageId: Long,
 	var message: String,
 	@ColumnInfo(name = "sent_at")
 	var sentAt: Long,

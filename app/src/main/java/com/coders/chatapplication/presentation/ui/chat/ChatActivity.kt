@@ -39,16 +39,24 @@ class ChatActivity : AppCompatActivity() {
 
 		chatViewModel.roomMessages.observe(this, Observer {
 			messageAdapter.update(it.toMutableList())
-			messageList.smoothScrollToPosition(messageAdapter.itemCount)
+			messageList.post {
+				messageList.smoothScrollToPosition(messageAdapter.itemCount)
+			}
 		})
 
 		messageSendButton.setOnClickListener {
 			val message = messageInput.text.toString()
 			if (!TextUtils.isEmpty(message)) {
-				chatViewModel.sendMessage(message)
+				chatViewModel.sendMessage(message.trim())
 			}
 			messageInput.text.clear()
 		}
+
+		chatViewModel.users.observe(this, Observer {
+			messageAdapter.users = it
+		})
+
+		chatViewModel.getRoomWithUsers()
 
 		chatViewModel.updateMessages()
 
