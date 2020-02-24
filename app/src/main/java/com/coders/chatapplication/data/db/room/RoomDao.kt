@@ -17,6 +17,9 @@ interface RoomDao {
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insert(vararg rooms: RoomEntity)
 
+	@Query("delete from rooms where roomId not in (:roomIds)")
+	suspend fun deleteRooms(roomIds: List<Long>)
+
 	@Transaction
 	@Query("select * from rooms where roomId = :roomId")
 	fun getRoomWithUsers(roomId: Long): Flow<RoomWithUsers>

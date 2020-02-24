@@ -3,4 +3,11 @@
     <string name="circle">Circle</string>
     <string name="rectangle">Rectangle</string>
     <string name="search">Search</string>
+    <string name="request">Request</string>
+    <string name="unblock">Unblock</string>
+    <string name="cancel">cancel</string>
+    <string name="accept">Accept</string>
+    <string name="delete">Delete</string>
+    <string name="requests">Requests</string>
+    <string name="decline">Decline</string>
 </resources>

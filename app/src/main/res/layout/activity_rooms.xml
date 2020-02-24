@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:color/white"
     tools:context=".presentation.ui.rooms.RoomsActivity">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -16,7 +17,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/room_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_room" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 

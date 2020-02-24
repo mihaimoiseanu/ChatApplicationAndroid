@@ -6,6 +6,7 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.Junction
 import androidx.room.OnConflictStrategy
+import androidx.room.Query
 import androidx.room.Relation
 import com.coders.chatapplication.data.db.user.UserEntity
 
@@ -27,6 +28,9 @@ data class RoomWithUsers(
 
 @Dao
 interface UserRoomDao {
+
+	@Query("delete from userroomcrossref where roomId not in (:roomId)")
+	suspend fun delete(roomId: List<Long>)
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	suspend fun insert(vararg userRooms: UserRoomCrossRef)

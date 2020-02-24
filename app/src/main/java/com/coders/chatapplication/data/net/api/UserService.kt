@@ -2,6 +2,7 @@ package com.coders.chatapplication.data.net.api
 
 import com.coders.chatapplication.data.net.models.FriendshipResponse
 import com.coders.chatapplication.data.net.models.UserResponse
+import com.coders.chatapplication.domain.model.FriendshipStatus
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -19,7 +20,7 @@ interface UserService {
 	suspend fun getUsers(@Query("search_term") searchTerm: String? = null): List<UserResponse>
 
 	@GET("users/friendships")
-	suspend fun getFriendships(@Query("status") status: FriendshipResponse.Status? = null): List<FriendshipResponse>
+	suspend fun getFriendships(@Query("status") status: FriendshipStatus? = null): List<FriendshipResponse>
 
 	@GET("users/friendships/{other_user_id}")
 	suspend fun getFriendship(@Path("other_user_id") otherUserId: Long): FriendshipResponse

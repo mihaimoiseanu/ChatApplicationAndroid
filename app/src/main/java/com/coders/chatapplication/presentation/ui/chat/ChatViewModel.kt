@@ -94,7 +94,10 @@ class ChatViewModel(
 	private fun handleGetRoomWithUser(response: Flow<RoomModel>) {
 		response
 			.map { it.users }
-			.onEach { users.postValue(it) }
+			.onEach {
+				users.postValue(it)
+				getRoomMessages()
+			}
 			.launchIn(viewModelScope)
 	}
 

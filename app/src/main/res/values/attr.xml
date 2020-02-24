@@ -4,7 +4,9 @@
         <attr name="avatar_shape" format="string" />
         <attr name="avatar_size" format="dimension" />
         <attr name="corner_radius" format="dimension" />
+        <attr name="background_color" format="color" />
         <attr name="border_color" format="color" />
+        <attr name="text_size" format="dimension" />
         <attr name="border_width" format="dimension" />
     </declare-styleable>
 </resources>

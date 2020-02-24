@@ -11,7 +11,9 @@ import com.coders.chatapplication.domain.model.UserModel
 import com.coders.chatapplication.presentation.commons.AsyncDiffUtil
 import com.coders.chatapplication.presentation.ui.views.AvatarImageView
 
-class SearchFriendsAdapter : RecyclerView.Adapter<SearchFriendsAdapter.ViewHolder>() {
+class SearchFriendsAdapter(
+	private val onItemClick: (UserModel) -> Unit
+) : RecyclerView.Adapter<SearchFriendsAdapter.ViewHolder>() {
 
 	private val diffUtil = AsyncDiffUtil(this, object : DiffUtil.ItemCallback<UserModel>() {
 		override fun areItemsTheSame(oldItem: UserModel, newItem: UserModel): Boolean {
@@ -47,7 +49,7 @@ class SearchFriendsAdapter : RecyclerView.Adapter<SearchFriendsAdapter.ViewHolde
 					"${userModel.firstName} ${userModel.lastName}"
 			}
 			itemView.setOnClickListener {
-
+				onItemClick(userModel)
 			}
 		}
 	}

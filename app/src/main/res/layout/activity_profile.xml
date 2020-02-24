@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+
+    <View
+        android:id="@+id/avatar_background"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:background="@color/colorAccent"
+        app:layout_constraintTop_toBottomOf="@+id/app_bar" />
+
+    <com.coders.chatapplication.presentation.ui.views.AvatarImageView
+        android:id="@+id/avatar"
+        android:layout_width="135dp"
+        android:layout_height="135dp"
+        app:avatar_shape="Circle"
+        app:avatar_size="130dp"
+        app:background_color="@color/colorPrimaryDark"
+        app:border_color="@android:color/white"
+        app:border_width="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/avatar_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avatar_background"
+        app:text_size="50sp" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/dancing_script"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="32sp"
+        app:layout_constraintTop_toBottomOf="@+id/avatar"
+        tools:text="John Doe" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/dancing_script"
+        android:gravity="center"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="28sp"
+        app:layout_constraintTop_toBottomOf="@+id/name"
+        tools:text="john.doe@gmail.com" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/input_button"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        tools:text="Request" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/block_button"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@android:color/holo_red_dark"
+        android:text="Block"
+        android:textColor="@android:color/white"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_button"
+        tools:text="Block" />
+
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:title="Profile"
+            app:titleTextColor="@android:color/white" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

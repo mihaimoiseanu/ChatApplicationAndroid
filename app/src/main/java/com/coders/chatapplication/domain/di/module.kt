@@ -11,7 +11,12 @@ import com.coders.chatapplication.domain.usecase.chat.UpdateMessagesUseCase
 import com.coders.chatapplication.domain.usecase.rooms.GetRoomWithUsersUseCase
 import com.coders.chatapplication.domain.usecase.rooms.GetRoomsUseCase
 import com.coders.chatapplication.domain.usecase.rooms.UpdatePublicRoomsUseCase
+import com.coders.chatapplication.domain.usecase.users.DeleteFriendshipUseCase
+import com.coders.chatapplication.domain.usecase.users.GetFriendRequestsUseCase
+import com.coders.chatapplication.domain.usecase.users.GetFriendshipUseCase
+import com.coders.chatapplication.domain.usecase.users.RequestFriendshipUseCase
 import com.coders.chatapplication.domain.usecase.users.SearchUsersUseCase
+import com.coders.chatapplication.domain.usecase.users.UpdateFriendshipUseCase
 import com.google.gson.Gson
 import org.koin.dsl.module
 
@@ -32,6 +37,26 @@ val domainModule = module {
 	//USERS
 	single {
 		SearchUsersUseCase(get())
+	}
+
+	single {
+		GetFriendshipUseCase(get())
+	}
+
+	single {
+		RequestFriendshipUseCase(get())
+	}
+
+	single {
+		UpdateFriendshipUseCase(get())
+	}
+
+	single {
+		DeleteFriendshipUseCase(get())
+	}
+
+	single {
+		GetFriendRequestsUseCase(get())
 	}
 
 	//ROOMS

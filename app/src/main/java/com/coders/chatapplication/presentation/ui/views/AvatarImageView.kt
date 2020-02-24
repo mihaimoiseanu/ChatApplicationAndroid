@@ -38,6 +38,7 @@ class AvatarImageView
 	private var rectF: RectF
 	private var shape = 0
 	private var borderWidth = 0f
+	private var color: Int = 0x0
 
 	init {
 		borderPaint.style = Paint.Style.STROKE
@@ -48,11 +49,7 @@ class AvatarImageView
 
 		paint = Paint(Paint.ANTI_ALIAS_FLAG)
 		textPaint = TextPaint(Paint.ANTI_ALIAS_FLAG)
-		textPaint.textSize = 22f * resources.displayMetrics.scaledDensity
 		textPaint.color = Color.WHITE
-
-		val rnd = Random()
-		paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
 
 		attributeSet?.let { attrs ->
 			val a = context.theme.obtainStyledAttributes(
@@ -75,6 +72,19 @@ class AvatarImageView
 				cornerRadius =
 					a.getDimensionPixelSize(R.styleable.AvatarView_corner_radius, 2)
 						.toFloat()
+
+				val color = a.getColor(R.styleable.AvatarView_background_color, 0x00000000)
+				if (color == 0) {
+					val rnd = Random()
+					paint.setARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256))
+				} else {
+					paint.color = color
+				}
+
+				textPaint.textSize = a.getDimension(
+					R.styleable.AvatarView_text_size,
+					22f * resources.displayMetrics.scaledDensity
+				)
 
 				borderPaint.color = a.getColor(R.styleable.AvatarView_border_color, 0x0000000)
 				borderWidth = a.getDimension(R.styleable.AvatarView_border_width, 0f)

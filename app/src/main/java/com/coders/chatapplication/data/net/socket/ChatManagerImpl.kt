@@ -2,6 +2,7 @@ package com.coders.chatapplication.data.net.socket
 
 import com.coders.chatapplication.data.db.messages.MessageDao
 import com.coders.chatapplication.data.db.messages.MessageEntity
+import com.coders.chatapplication.data.di.BASE_URL
 import com.coders.chatapplication.data.net.models.MessageResponse
 import com.coders.chatapplication.domain.model.MessageModel
 import com.coders.chatapplication.domain.repository.ChatManager
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import kotlin.coroutines.CoroutineContext
 
+@Suppress("EXPERIMENTAL_API_USAGE")
 class ChatManagerImpl(
 	okHttpClient: OkHttpClient,
 	private val messageDao: MessageDao,
@@ -30,7 +32,7 @@ class ChatManagerImpl(
 
 	private val stompClient = Stomp.over(
 		type = ConnectionProvider.Type.OKHTTP,
-		uri = "ws://192.168.1.149:8080/websocket",
+		uri = "ws://$BASE_URL/websocket",
 		okHttpClient = okHttpClient
 	)
 

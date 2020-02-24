@@ -23,11 +23,9 @@ class RoomsViewModel(
 	val onUpdateRoomSuccess = MutableLiveData<Boolean>()
 
 	fun getRooms() {
-		viewModelScope.launch {
-			withContext(Dispatchers.IO) {
-				getRoomWithUsersUseCase(this, NoParams) {
-					it.either(::handleFailure, ::handlePublicRoomSuccess)
-				}
+		viewModelScope.launch(Dispatchers.IO) {
+			getRoomWithUsersUseCase(this, NoParams) {
+				it.either(::handleFailure, ::handlePublicRoomSuccess)
 			}
 		}
 	}

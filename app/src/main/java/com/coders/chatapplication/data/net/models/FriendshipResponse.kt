@@ -1,12 +1,9 @@
 package com.coders.chatapplication.data.net.models
 
+import com.coders.chatapplication.domain.model.FriendshipStatus
+
 data class FriendshipResponse(
 	val user: UserResponse,
-	val status: Status
-) {
-	enum class Status {
-		PENDING,
-		ACCEPTED,
-		BLOCKED
-	}
-}
+	val status: FriendshipStatus,
+	val lastUserActioned: Long? = null
+)

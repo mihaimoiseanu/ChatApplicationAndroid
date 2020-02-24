@@ -39,6 +39,8 @@ val dataModule = module {
 	single<RoomRepository> {
 		RoomRepositoryImpl(
 			get(),
+			get(),
+			get(),
 			get()
 		)
 	}
@@ -101,7 +103,7 @@ val networkingModule = module {
 		Retrofit.Builder()
 			.client(get())
 			.addConverterFactory(GsonConverterFactory.create())
-			.baseUrl("http://192.168.0.118:8080/api/")
+			.baseUrl("http://$BASE_URL/api/")
 			.build()
 	}
 
@@ -122,3 +124,6 @@ val networkingModule = module {
 	}
 
 }
+
+
+const val BASE_URL = "192.168.1.150:8080"
