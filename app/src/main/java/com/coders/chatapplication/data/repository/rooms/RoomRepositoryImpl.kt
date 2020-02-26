@@ -47,6 +47,5 @@ class RoomRepositoryImpl(
 		userDao.insert(*(users).toTypedArray())
 		roomDao.deleteRooms(roomsIds)
 		roomDao.insert(*(rooms.toTypedArray()))
-
 	}
 }

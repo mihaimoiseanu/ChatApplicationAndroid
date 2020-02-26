@@ -24,7 +24,7 @@ class SearchFriendsViewModel(
 
 	init {
 		searchChannelFlow.consumeAsFlow()
-			.debounce(1_000)
+			.debounce(500)
 			.onEach {
 				searchUsers(it)
 			}.launchIn(viewModelScope)

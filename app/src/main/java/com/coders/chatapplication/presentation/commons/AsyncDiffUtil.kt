@@ -1,5 +1,6 @@
 package com.coders.chatapplication.presentation.commons
 
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,8 @@ class AsyncDiffUtil<T>(
 	private var list: MutableList<T>? = null
 	private var readOnlyList: List<T> = emptyList()
 	private lateinit var operationChannel: Channel<UpdateListOperation>
+
+	val onDiffFinished = MutableLiveData<Unit>()
 
 	constructor(
 		adapter: RecyclerView.Adapter<out RecyclerView.ViewHolder>,
@@ -82,6 +85,7 @@ class AsyncDiffUtil<T>(
 			list = null
 			readOnlyList = emptyList()
 			listUpdateCallback.onRemoved(0, count)
+			onDiffFinished.postValue(Unit)
 		}
 	}
 
@@ -91,6 +95,7 @@ class AsyncDiffUtil<T>(
 			list = newList as MutableList<T>
 			readOnlyList = newList.toImmutableList()
 			listUpdateCallback.onInserted(0, newList.size)
+			onDiffFinished.postValue(Unit)
 		}
 	}
 
@@ -108,6 +113,7 @@ class AsyncDiffUtil<T>(
 			list = newList
 			readOnlyList = newList.toImmutableList()
 			result.dispatchUpdatesTo(listUpdateCallback)
+			onDiffFinished.postValue(Unit)
 		}
 	}
 
@@ -138,11 +144,6 @@ class AsyncDiffUtil<T>(
 			}
 			.launchIn(this)
 	}
-
-	open fun onOperationFinished() {
-		//no-op
-	}
-
 
 	private fun diffUtilCallback(
 		oldList: List<T>,

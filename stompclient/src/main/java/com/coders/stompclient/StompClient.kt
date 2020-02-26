@@ -42,7 +42,7 @@ class StompClient(
 		get() = Dispatchers.IO + parentJob
 
 	var legacyWhitespace = false
-	private var headers: List<StompHeader>? = null
+	private var headers: MutableList<StompHeader>? = null
 
 	private var messageChannel = Channel<StompMessage>(Channel.UNLIMITED)
 	var lifecycleChannel = Channel<LifecycleEvent>(Channel.UNLIMITED)
@@ -68,11 +68,7 @@ class StompClient(
 			heartBeatTask.serverHeartbeat = value
 		}
 
-	fun connect(headers: MutableList<StompHeader> = mutableListOf()) {
-		this.headers = headers
-		if (connectionProvider.isConnected) {
-			return
-		}
+	init {
 		messageChannel = Channel()
 		lifecycleChannel = Channel()
 		connectionChannel = Channel()
@@ -80,8 +76,8 @@ class StompClient(
 		connectionProvider.lifecycleChannel.consumeAsFlow().onEach {
 			when (it.type) {
 				LifecycleEvent.Type.OPENED -> {
-					headers.add(StompHeader(StompHeader.VERSION, SUPPORTED_VERSIONS))
-					headers.add(
+					headers?.add(StompHeader(StompHeader.VERSION, SUPPORTED_VERSIONS))
+					headers?.add(
 						StompHeader(
 							StompHeader.HEART_BEAT,
 							"${heartBeatTask.clientHeartbeat},${heartBeatTask.serverHeartbeat}"
@@ -116,6 +112,13 @@ class StompClient(
 				}
 			}.launchIn(this)
 
+	}
+
+	fun connect(headers: MutableList<StompHeader> = mutableListOf()) {
+		this.headers = headers
+		if (connectionProvider.isConnected) {
+			return
+		}
 		connectionProvider.createWebSocketConnection()
 	}
 

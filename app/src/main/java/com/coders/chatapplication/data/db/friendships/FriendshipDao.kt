@@ -14,9 +14,9 @@ interface FriendshipDao {
 	fun insertFriendships(vararg friendshipEntity: FriendshipEntity)
 
 	@Delete
-	fun deleteFriendship(friendshipId: Long)
+	fun deleteFriendship(vararg friendshipEntity: FriendshipEntity)
 
 	@Transaction
-	@Query("select * from friendship")
+	@Query("select * from users")
 	fun getAllFriendships(): List<FriendshipUserEntity>
 }

@@ -27,8 +27,7 @@ val presentationModule = module {
 
 	viewModel {
 		ChatViewModel(
-			get(), get(), get(), get(),
-			get(), get()
+			get(), get(), get(), get()
 		)
 	}
 

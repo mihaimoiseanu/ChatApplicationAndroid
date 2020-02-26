@@ -5,7 +5,7 @@ import com.coders.chatapplication.domain.usecase.auth.LoginUseCase
 import com.coders.chatapplication.domain.usecase.auth.RegisterUseCase
 import com.coders.chatapplication.domain.usecase.chat.GetRoomMessagesUseCase
 import com.coders.chatapplication.domain.usecase.chat.SendMessageUseCase
-import com.coders.chatapplication.domain.usecase.chat.SubscribeToRoomUseCase
+import com.coders.chatapplication.domain.usecase.chat.SubscribeForEventsUseCase
 import com.coders.chatapplication.domain.usecase.chat.UnSubscribeFromChannel
 import com.coders.chatapplication.domain.usecase.chat.UpdateMessagesUseCase
 import com.coders.chatapplication.domain.usecase.rooms.GetRoomWithUsersUseCase
@@ -74,7 +74,7 @@ val domainModule = module {
 	single {
 		GetRoomMessagesUseCase(get())
 	}
-	single { SubscribeToRoomUseCase(get()) }
+	single { SubscribeForEventsUseCase(get()) }
 
 	single { UnSubscribeFromChannel(get()) }
 

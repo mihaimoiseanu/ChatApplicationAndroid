@@ -13,7 +13,6 @@ import org.koin.core.logger.Level
 import timber.log.Timber
 
 class MainApplication : Application() {
-
 	override fun onCreate() {
 		super.onCreate()
 		startKoin {

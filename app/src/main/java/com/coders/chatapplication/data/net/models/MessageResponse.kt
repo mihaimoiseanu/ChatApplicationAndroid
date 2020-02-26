@@ -6,4 +6,4 @@ data class MessageResponse(
 	val senderId: Long? = null,
 	val roomId: Long? = null,
 	val sentAt: Long? = null
-)
+) : EventDTO

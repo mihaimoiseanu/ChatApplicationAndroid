@@ -15,7 +15,8 @@ class SendMessageUseCase(
 		val messageModel = MessageModel(
 			message = params.message,
 			sender = sharedPrefs.userId,
-			sentAt = System.currentTimeMillis()
+			sentAt = System.currentTimeMillis(),
+			roomId = params.roomId
 		)
 		chatManager.sendMessage(params.roomId, messageModel)
 		return Either.Right(Unit)

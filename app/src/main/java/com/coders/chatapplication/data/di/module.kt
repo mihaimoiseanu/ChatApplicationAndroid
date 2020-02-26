@@ -10,13 +10,13 @@ import com.coders.chatapplication.data.net.interceptors.AuthInterceptor
 import com.coders.chatapplication.data.net.socket.ChatManagerImpl
 import com.coders.chatapplication.data.repository.auth.AuthRepositoryImpl
 import com.coders.chatapplication.data.repository.auth.datasource.RemoteDataSource
-import com.coders.chatapplication.data.repository.chat.ChatRepositoryImpl
+import com.coders.chatapplication.data.repository.chat.MessageRepositoryImpl
 import com.coders.chatapplication.data.repository.rooms.RoomRepositoryImpl
 import com.coders.chatapplication.data.repository.users.UserRepositoryImpl
 import com.coders.chatapplication.data.sharedprefs.SharedPrefs
 import com.coders.chatapplication.domain.repository.AuthRepository
 import com.coders.chatapplication.domain.repository.ChatManager
-import com.coders.chatapplication.domain.repository.ChatRepository
+import com.coders.chatapplication.domain.repository.MessageRepository
 import com.coders.chatapplication.domain.repository.RoomRepository
 import com.coders.chatapplication.domain.repository.UserRepository
 import okhttp3.OkHttpClient
@@ -49,8 +49,8 @@ val dataModule = module {
 		UserRepositoryImpl(get())
 	}
 
-	single<ChatRepository> {
-		ChatRepositoryImpl(get(), get())
+	single<MessageRepository> {
+		MessageRepositoryImpl(get(), get())
 	}
 
 	single {
@@ -120,10 +120,10 @@ val networkingModule = module {
 	}
 
 	single<ChatManager> {
-		ChatManagerImpl(get(), get(), get())
+		ChatManagerImpl(get(), get(), get(), get())
 	}
 
 }
 
 
-const val BASE_URL = "192.168.1.150:8080"
+const val BASE_URL = "192.168.0.102:8080"

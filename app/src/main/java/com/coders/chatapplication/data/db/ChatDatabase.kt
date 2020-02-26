@@ -2,6 +2,8 @@ package com.coders.chatapplication.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.coders.chatapplication.data.db.friendships.FriendshipDao
+import com.coders.chatapplication.data.db.friendships.FriendshipEntity
 import com.coders.chatapplication.data.db.messages.MessageDao
 import com.coders.chatapplication.data.db.messages.MessageEntity
 import com.coders.chatapplication.data.db.room.RoomDao
@@ -12,7 +14,7 @@ import com.coders.chatapplication.data.db.user.UserDao
 import com.coders.chatapplication.data.db.user.UserEntity
 
 @Database(
-	entities = [UserEntity::class, RoomEntity::class, MessageEntity::class, UserRoomCrossRef::class],
+	entities = [UserEntity::class, RoomEntity::class, MessageEntity::class, UserRoomCrossRef::class, FriendshipEntity::class],
 	version = 1,
 	exportSchema = false
 )
@@ -22,5 +24,6 @@ abstract class ChatDatabase : RoomDatabase() {
 	abstract fun roomDao(): RoomDao
 	abstract fun messageDao(): MessageDao
 	abstract fun userRoomDao(): UserRoomDao
+	abstract fun friendshipDao(): FriendshipDao
 
 }

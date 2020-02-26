@@ -9,7 +9,7 @@ class UnSubscribeFromChannel(
 	private val chatManager: ChatManager
 ) : UseCase<Long, Unit>() {
 	override suspend fun execute(params: Long): Either<Failure, Unit> {
-		chatManager.unSubscribeFromRoom(params)
+		chatManager.unSubscribeFromEvents()
 		return Either.Right(Unit)
 	}
 }

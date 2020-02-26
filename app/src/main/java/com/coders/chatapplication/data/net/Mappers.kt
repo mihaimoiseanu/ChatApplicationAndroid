@@ -1,10 +1,13 @@
 package com.coders.chatapplication.data.net
 
+import com.coders.chatapplication.data.db.messages.MessageEntity
 import com.coders.chatapplication.data.db.room.RoomWithUsers
 import com.coders.chatapplication.data.db.user.UserEntity
 import com.coders.chatapplication.data.net.models.FriendshipResponse
+import com.coders.chatapplication.data.net.models.MessageResponse
 import com.coders.chatapplication.data.net.models.UserResponse
 import com.coders.chatapplication.domain.model.FriendshipModel
+import com.coders.chatapplication.domain.model.MessageModel
 import com.coders.chatapplication.domain.model.RoomModel
 import com.coders.chatapplication.domain.model.UserModel
 
@@ -38,3 +41,18 @@ fun RoomWithUsers.asDomain(): RoomModel {
 		users.map { it.asDomain() }
 	)
 }
+
+fun MessageModel.asResponse() =
+	MessageResponse(
+		id, message, sender, roomId, sentAt
+	)
+
+fun MessageResponse.asDomain() =
+	MessageModel(
+		id, message!!, senderId!!, sentAt, roomId!!
+	)
+
+fun MessageModel.asEntity() =
+	MessageEntity(
+		id!!, message, sentAt!!, roomId, sender
+	)

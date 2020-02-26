@@ -7,8 +7,6 @@ import com.coders.chatapplication.domain.model.RoomModel
 import com.coders.chatapplication.domain.model.UserModel
 import com.coders.chatapplication.domain.usecase.chat.GetRoomMessagesUseCase
 import com.coders.chatapplication.domain.usecase.chat.SendMessageUseCase
-import com.coders.chatapplication.domain.usecase.chat.SubscribeToRoomUseCase
-import com.coders.chatapplication.domain.usecase.chat.UnSubscribeFromChannel
 import com.coders.chatapplication.domain.usecase.chat.UpdateMessagesUseCase
 import com.coders.chatapplication.domain.usecase.rooms.GetRoomWithUsersUseCase
 import com.coders.chatapplication.presentation.commons.BaseViewModel
@@ -22,8 +20,6 @@ import kotlinx.coroutines.withContext
 
 class ChatViewModel(
 	private val getRoomMessagesUseCase: GetRoomMessagesUseCase,
-	private val subscribeToRoomUseCase: SubscribeToRoomUseCase,
-	private val unSubscribeFromChannel: UnSubscribeFromChannel,
 	private val updateMessagesUseCase: UpdateMessagesUseCase,
 	private val sendMessageUseCase: SendMessageUseCase,
 	private val getRoomWithUsersUseCase: GetRoomWithUsersUseCase
@@ -45,21 +41,9 @@ class ChatViewModel(
 	}
 
 	fun updateMessages() {
-		viewModelScope.launch {
-			withContext(Dispatchers.IO) {
-				updateMessagesUseCase(viewModelScope, roomId) {
-					it.either(::handleFailure)
-				}
-			}
-		}
-	}
-
-	fun subscribeToRoom() {
-		viewModelScope.launch {
-			withContext(Dispatchers.IO) {
-				subscribeToRoomUseCase(viewModelScope, roomId) {
-					it.either(::handleFailure)
-				}
+		viewModelScope.launch(Dispatchers.IO) {
+			updateMessagesUseCase(viewModelScope, roomId) {
+				it.either(::handleFailure)
 			}
 		}
 	}
@@ -82,12 +66,6 @@ class ChatViewModel(
 					it.either(::handleFailure)
 				}
 			}
-		}
-	}
-
-	fun unsubscribeFromRoom() {
-		unSubscribeFromChannel(viewModelScope, roomId) {
-			it.either(::handleFailure)
 		}
 	}
 

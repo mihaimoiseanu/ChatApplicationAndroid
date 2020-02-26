@@ -5,4 +5,4 @@ data class RoomResponse(
 	val name: String? = null,
 	val users: List<UserResponse>? = null,
 	val lastMessageId: Long
-)
+) : EventDTO

@@ -6,4 +6,4 @@ data class FriendshipResponse(
 	val user: UserResponse,
 	val status: FriendshipStatus,
 	val lastUserActioned: Long? = null
-)
+) : EventDTO

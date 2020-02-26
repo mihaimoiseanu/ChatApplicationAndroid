@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.coders.chatapplication.R
@@ -27,6 +28,9 @@ class ChatAdapter(
 			return oldItem == newItem
 		}
 	})
+
+	val diffFinished: LiveData<Unit>
+		get() = diffUtil.onDiffFinished
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 		val layoutInflater = LayoutInflater.from(parent.context)

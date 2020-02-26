@@ -45,9 +45,6 @@ class ChatActivity : AppCompatActivity() {
 
 		chatViewModel.roomMessages.observe(this, Observer {
 			messageAdapter.update(it.toMutableList())
-			messageList.post {
-				messageList.smoothScrollToPosition(messageAdapter.itemCount)
-			}
 		})
 
 		messageSendButton.setOnClickListener {
@@ -62,16 +59,13 @@ class ChatActivity : AppCompatActivity() {
 			messageAdapter.users = it
 		})
 
+		messageAdapter.diffFinished.observe(this, Observer {
+			messageList.smoothScrollToPosition(messageAdapter.itemCount)
+		})
+
 		chatViewModel.getRoomWithUsers()
 
 		chatViewModel.updateMessages()
-
-		chatViewModel.subscribeToRoom()
-	}
-
-	override fun finish() {
-		chatViewModel.unsubscribeFromRoom()
-		super.finish()
 	}
 
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {

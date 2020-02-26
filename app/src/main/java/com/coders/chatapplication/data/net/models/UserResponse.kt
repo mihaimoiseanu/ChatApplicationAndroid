@@ -6,4 +6,4 @@ data class UserResponse(
 	val firstName: String? = null,
 	val lastName: String? = null,
 	val pass: String? = null
-)
+) : EventDTO
