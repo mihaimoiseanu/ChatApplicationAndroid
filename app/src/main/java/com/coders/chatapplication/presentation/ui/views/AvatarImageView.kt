@@ -125,7 +125,8 @@ class AvatarImageView
 		super.onDraw(canvas)
 	}
 
-	fun setText(text: String) {
+	fun setText(text: String, colorInt: Int) {
+		paint.setARGB(255, colorInt, colorInt, colorInt)
 		drwa = object : Drawable() {
 			override fun draw(canvas: Canvas) {
 				val centerX = (bounds.width() * 0.5f).roundToLong()
@@ -149,7 +150,6 @@ class AvatarImageView
 					centerY + textBaseLineHeight,
 					textPaint
 				)
-
 			}
 
 			override fun setAlpha(alpha: Int) {

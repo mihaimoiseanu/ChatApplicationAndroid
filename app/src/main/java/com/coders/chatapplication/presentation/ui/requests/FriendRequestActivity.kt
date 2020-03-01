@@ -34,7 +34,7 @@ class FriendRequestActivity : AppCompatActivity() {
 		supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 		swipeRefreshLayout.setOnRefreshListener {
-			viewModel.loadRequests()
+			viewModel.updateFriendships()
 		}
 
 		requestList.layoutManager = LinearLayoutManager(this)
@@ -49,8 +49,8 @@ class FriendRequestActivity : AppCompatActivity() {
 			toastIt(it.exception.localizedMessage)
 			swipeRefreshLayout.isRefreshing = false
 		})
-
 		viewModel.loadRequests()
+		viewModel.updateFriendships()
 	}
 
 	private fun handleStatusChange(model: FriendshipModel, newStatus: FriendshipStatus) {
@@ -61,7 +61,7 @@ class FriendRequestActivity : AppCompatActivity() {
 					model.userModel
 				)
 			)
-			FriendshipStatus.NONE -> viewModel.deleteFriendship(model.userModel.id!!)
+			FriendshipStatus.NONE -> viewModel.deleteFriendship(model)
 			else -> { /* do nothing */
 			}
 		}

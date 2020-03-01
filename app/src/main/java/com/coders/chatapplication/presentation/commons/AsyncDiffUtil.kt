@@ -102,17 +102,17 @@ class AsyncDiffUtil<T>(
 	@Suppress("UNCHECKED_CAST")
 	private suspend fun update(newList: List<*>, callback: DiffUtil.Callback) {
 		withContext(Dispatchers.Default) {
-			val result = DiffUtil.calculateDiff(callback)
+			val diffResult = DiffUtil.calculateDiff(callback)
 			if (!coroutineContext.isActive) return@withContext
-			latch(newList as MutableList<T>, result)
+			latch(newList as MutableList<T>, diffResult)
 		}
 	}
 
-	private suspend fun latch(newList: MutableList<T>, result: DiffUtil.DiffResult) {
+	private suspend fun latch(newList: MutableList<T>, diffResult: DiffUtil.DiffResult) {
 		withContext(Dispatchers.Main) {
 			list = newList
 			readOnlyList = newList.toImmutableList()
-			result.dispatchUpdatesTo(listUpdateCallback)
+			diffResult.dispatchUpdatesTo(listUpdateCallback)
 			onDiffFinished.postValue(Unit)
 		}
 	}

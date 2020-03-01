@@ -37,7 +37,10 @@ class ChatActivity : AppCompatActivity() {
 
 		chatViewModel.roomId = intent.getLongExtra("room_id", -1)
 		supportActionBar?.title = intent.getStringExtra("room_name")
-		messageList.layoutManager = LinearLayoutManager(this)
+		messageList.layoutManager = LinearLayoutManager(this).apply {
+			stackFromEnd = true
+			reverseLayout = true
+		}
 		messageList.adapter = messageAdapter
 		chatViewModel.failure.observe(this, Observer {
 			toastIt(it.exception.message ?: "error")
@@ -60,7 +63,7 @@ class ChatActivity : AppCompatActivity() {
 		})
 
 		messageAdapter.diffFinished.observe(this, Observer {
-			messageList.smoothScrollToPosition(messageAdapter.itemCount)
+			messageList.scrollToPosition(0)
 		})
 
 		chatViewModel.getRoomWithUsers()

@@ -14,7 +14,8 @@ object Stomp {
 		type: ConnectionProvider.Type,
 		uri: String,
 		headers: MutableMap<String, String> = mutableMapOf(),
-		okHttpClient: OkHttpClient? = null
+		okHttpClient: OkHttpClient? = null,
+		reconnect: Boolean = true
 	): StompClient {
 
 		val connectionProvider = when (type) {
@@ -25,6 +26,7 @@ object Stomp {
 		return StompClient(connectionProvider).apply {
 			clientHeartBeat = 10_000
 			serverHeartBeat = 10_000
+			this.reconnect = reconnect
 		}
 	}
 }

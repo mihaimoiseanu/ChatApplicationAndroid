@@ -14,6 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.launchIn
@@ -42,6 +43,7 @@ class StompClient(
 		get() = Dispatchers.IO + parentJob
 
 	var legacyWhitespace = false
+	var reconnect = true
 	private var headers: MutableList<StompHeader>? = null
 
 	private var messageChannel = Channel<StompMessage>(Channel.UNLIMITED)
@@ -69,9 +71,6 @@ class StompClient(
 		}
 
 	init {
-		messageChannel = Channel()
-		lifecycleChannel = Channel()
-		connectionChannel = Channel()
 
 		connectionProvider.lifecycleChannel.consumeAsFlow().onEach {
 			when (it.type) {
@@ -97,6 +96,12 @@ class StompClient(
 				}
 				LifecycleEvent.Type.ERROR -> {
 					launch { lifecycleChannel.send(it) }
+					if (reconnect && !connectionProvider.isConnected) {
+						launch {
+							delay(3_000)
+							connect()
+						}
+					}
 				}
 			}
 		}.launchIn(this)
@@ -118,6 +123,15 @@ class StompClient(
 		this.headers = headers
 		if (connectionProvider.isConnected) {
 			return
+		}
+		if (messageChannel.isClosedForSend) {
+			messageChannel = Channel()
+		}
+		if (lifecycleChannel.isClosedForSend) {
+			lifecycleChannel = Channel()
+		}
+		if (connectionChannel.isClosedForSend) {
+			connectionChannel = Channel()
 		}
 		connectionProvider.createWebSocketConnection()
 	}

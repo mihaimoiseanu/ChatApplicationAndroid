@@ -9,6 +9,14 @@ interface RoomRepository {
 
 	suspend fun getRoomWithUsers(roomId: Long): Flow<RoomModel>
 
+	suspend fun insertRoom(model: RoomModel)
+
+	suspend fun updateRoomLastMessage(roomId: Long, messageId: Long)
+
+	suspend fun updateRoom(model: RoomModel)
+
+	suspend fun deleteRoom(room: RoomModel)
+
 	suspend fun updateRooms()
 
 }

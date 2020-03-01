@@ -6,7 +6,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "users")
 data class UserEntity(
-	@PrimaryKey var userId: Long,
+	@PrimaryKey
+	@ColumnInfo(index = true)
+	var userId: Long,
 	@ColumnInfo(name = "email") var email: String,
 	@ColumnInfo(name = "first_name") var firstName: String?,
 	@ColumnInfo(name = "last_name") var lastName: String?

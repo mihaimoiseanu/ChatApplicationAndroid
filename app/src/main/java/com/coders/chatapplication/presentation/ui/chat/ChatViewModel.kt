@@ -31,11 +31,9 @@ class ChatViewModel(
 	var users = MutableLiveData<List<UserModel>>()
 
 	fun getRoomMessages() {
-		viewModelScope.launch {
-			withContext(Dispatchers.IO) {
-				getRoomMessagesUseCase(this, roomId) {
-					it.either(::handleFailure, ::handleGetMessages)
-				}
+		viewModelScope.launch(Dispatchers.IO) {
+			getRoomMessagesUseCase(this, roomId) {
+				it.either(::handleFailure, ::handleGetMessages)
 			}
 		}
 	}

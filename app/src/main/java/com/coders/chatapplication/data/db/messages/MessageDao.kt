@@ -16,6 +16,9 @@ interface MessageDao {
 	@Delete
 	suspend fun delete(vararg messages: MessageEntity)
 
-	@Query("select * from messages where room_id = :roomId")
+	@Query("delete from messages where roomId = :roomId")
+	suspend fun delete(roomId: Long)
+
+	@Query("select * from messages where roomId = :roomId order by sentAt desc")
 	fun getMessagesForRoom(roomId: Long): Flow<List<MessageEntity>>
 }

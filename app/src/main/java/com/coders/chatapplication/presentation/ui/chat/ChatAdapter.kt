@@ -68,10 +68,12 @@ class ChatAdapter(
 
 	inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+		private val text = itemView.findViewById<TextView>(R.id.text)
+		private val author = itemView.findViewById<TextView>(R.id.author)
+
 		fun bindItem(messageModel: MessageModel) {
-			itemView.findViewById<TextView>(R.id.text).text = messageModel.message
-			itemView.findViewById<TextView>(R.id.author).text =
-				"${users.find { it.id == messageModel.sender }?.firstName}"
+			text.text = messageModel.message
+			author.text = "${users.find { it.id == messageModel.sender }?.firstName}"
 		}
 
 		fun clearView() {

@@ -11,6 +11,9 @@ import com.coders.chatapplication.domain.usecase.users.RequestFriendshipUseCase
 import com.coders.chatapplication.domain.usecase.users.UpdateFriendshipUseCase
 import com.coders.chatapplication.presentation.commons.BaseViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(
@@ -32,8 +35,10 @@ class ProfileViewModel(
 		}
 	}
 
-	private fun handleGetFriendshipSuccess(friendshipModel: FriendshipModel) {
-		friendship.postValue(friendshipModel)
+	private fun handleGetFriendshipSuccess(result: Flow<FriendshipModel>) {
+		result.onEach {
+			friendship.postValue(it)
+		}.launchIn(viewModelScope)
 	}
 
 	fun sendAction() {
@@ -41,14 +46,14 @@ class ProfileViewModel(
 		when (friendship.friendshipStatus) {
 			FriendshipStatus.PENDING -> {
 				if (thisUserId == friendship.lastUserActioned) {
-					deleteFriendship(friendship.userModel.id!!)
+					deleteFriendship(friendship)
 				} else {
 					val friendshipToUpdate =
 						FriendshipModel(FriendshipStatus.ACCEPTED, friendship.userModel)
 					updateFriendship(friendshipToUpdate)
 				}
 			}
-			FriendshipStatus.ACCEPTED -> deleteFriendship(friendship.userModel.id!!)
+			FriendshipStatus.ACCEPTED -> deleteFriendship(friendship)
 			FriendshipStatus.BLOCKED -> {
 				val friendshipToUpdate =
 					FriendshipModel(FriendshipStatus.ACCEPTED, friendship.userModel)
@@ -63,7 +68,7 @@ class ProfileViewModel(
 	private fun requestFriendship(friendship: FriendshipModel) {
 		viewModelScope.launch(Dispatchers.IO) {
 			requestFriendshipUseCase(this, friendship) {
-				it.either(::handleFailure, ::handleGetFriendshipSuccess)
+				it.either(::handleFailure)
 			}
 		}
 	}
@@ -71,12 +76,12 @@ class ProfileViewModel(
 	private fun updateFriendship(friendshipToUpdate: FriendshipModel) {
 		viewModelScope.launch(Dispatchers.IO) {
 			updateFriendshipUseCase(this, friendshipToUpdate) {
-				it.either(::handleFailure, ::handleGetFriendshipSuccess)
+				it.either(::handleFailure)
 			}
 		}
 	}
 
-	private fun deleteFriendship(otherUserId: Long) {
+	private fun deleteFriendship(otherUserId: FriendshipModel) {
 		viewModelScope.launch(Dispatchers.IO) {
 			deleteFriendshipUseCase(this, otherUserId) {
 				it.either(::handleFailure, ::handleDeleteSuccess)

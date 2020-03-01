@@ -65,7 +65,10 @@ class ProfileActivity : AppCompatActivity() {
 
 	private fun handleFriendship(friendshipModel: FriendshipModel) {
 		val userModel = friendshipModel.userModel
-		avatar.setText("${userModel.firstName?.get(0)}${userModel.lastName?.get(0)}")
+		avatar.setText(
+			"${userModel.firstName?.get(0)}${userModel.lastName?.get(0)}",
+			((friendshipModel.userModel.id ?: 0) % 255).toInt()
+		)
 		name.text = "${userModel.firstName} ${userModel.lastName}"
 		email.text = "${userModel.email}"
 		inputButton.text = when (friendshipModel.friendshipStatus) {

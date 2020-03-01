@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.coders.chatapplication.MainApplication
 import com.coders.chatapplication.R
 import com.coders.chatapplication.presentation.commons.bindView
 import com.coders.chatapplication.presentation.ui.register.RegisterActivity
@@ -32,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
 			doLogin()
 		}
 		viewModel.loginSuccess.observe(this, Observer {
+			(application as MainApplication).enqueueWork()
 			startActivity(Intent(this@LoginActivity, RoomsActivity::class.java))
 			finish()
 		})

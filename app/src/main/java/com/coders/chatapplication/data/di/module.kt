@@ -10,12 +10,14 @@ import com.coders.chatapplication.data.net.interceptors.AuthInterceptor
 import com.coders.chatapplication.data.net.socket.ChatManagerImpl
 import com.coders.chatapplication.data.repository.auth.AuthRepositoryImpl
 import com.coders.chatapplication.data.repository.auth.datasource.RemoteDataSource
-import com.coders.chatapplication.data.repository.chat.MessageRepositoryImpl
+import com.coders.chatapplication.data.repository.friendship.FriendshipRepositoryImpl
+import com.coders.chatapplication.data.repository.message.MessageRepositoryImpl
 import com.coders.chatapplication.data.repository.rooms.RoomRepositoryImpl
 import com.coders.chatapplication.data.repository.users.UserRepositoryImpl
 import com.coders.chatapplication.data.sharedprefs.SharedPrefs
 import com.coders.chatapplication.domain.repository.AuthRepository
 import com.coders.chatapplication.domain.repository.ChatManager
+import com.coders.chatapplication.domain.repository.FriendshipRepository
 import com.coders.chatapplication.domain.repository.MessageRepository
 import com.coders.chatapplication.domain.repository.RoomRepository
 import com.coders.chatapplication.domain.repository.UserRepository
@@ -41,8 +43,13 @@ val dataModule = module {
 			get(),
 			get(),
 			get(),
+			get(),
 			get()
 		)
+	}
+
+	single<FriendshipRepository> {
+		FriendshipRepositoryImpl(get(), get(), get())
 	}
 
 	single<UserRepository> {
@@ -78,6 +85,9 @@ val dbModule = module {
 	}
 	single {
 		get<ChatDatabase>().userRoomDao()
+	}
+	single {
+		get<ChatDatabase>().friendshipDao()
 	}
 
 }
@@ -120,10 +130,10 @@ val networkingModule = module {
 	}
 
 	single<ChatManager> {
-		ChatManagerImpl(get(), get(), get(), get())
+		ChatManagerImpl(get(), get(), get(), get(), get(), get())
 	}
 
 }
 
 
-const val BASE_URL = "192.168.0.102:8080"
+const val BASE_URL = "192.168.0.118:8080"

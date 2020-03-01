@@ -62,7 +62,8 @@ class FriendRequestAdapter(
 			avatar.setText(
 				"${model.userModel.firstName?.get(
 					0
-				)}"
+				)}",
+				((model.userModel.id ?: 0) % 255).toInt()
 			)
 			name.text = "${model.userModel.firstName} ${model.userModel.lastName}"
 			when (model.friendshipStatus) {

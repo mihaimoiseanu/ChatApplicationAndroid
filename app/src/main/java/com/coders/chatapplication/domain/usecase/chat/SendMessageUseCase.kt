@@ -3,6 +3,8 @@ package com.coders.chatapplication.domain.usecase.chat
 import com.coders.chatapplication.commons.domain.exception.Failure
 import com.coders.chatapplication.commons.domain.response.Either
 import com.coders.chatapplication.commons.domain.usecase.UseCase
+import com.coders.chatapplication.data.net.asResponse
+import com.coders.chatapplication.data.net.models.EventType
 import com.coders.chatapplication.data.sharedprefs.SharedPrefs
 import com.coders.chatapplication.domain.model.MessageModel
 import com.coders.chatapplication.domain.repository.ChatManager
@@ -18,7 +20,10 @@ class SendMessageUseCase(
 			sentAt = System.currentTimeMillis(),
 			roomId = params.roomId
 		)
-		chatManager.sendMessage(params.roomId, messageModel)
+		chatManager.sendEvent(
+			EventType.MESSAGE_CREATED,
+			messageModel.asResponse()
+		)
 		return Either.Right(Unit)
 	}
 

@@ -9,11 +9,11 @@ import androidx.room.Query
 interface UserDao {
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	fun insert(vararg userEntity: UserEntity)
+	suspend fun insert(vararg userEntity: UserEntity)
 
 	@Query("select * from users")
 	fun getAllUsers(): List<UserEntity>
 
 	@Query("select * from users where userId = :userId")
-	fun getUserById(userId: Long): UserEntity
+	suspend fun getUserById(userId: Long): UserEntity
 }

@@ -44,7 +44,10 @@ class SearchFriendsAdapter(
 	inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 		fun bindView(userModel: UserModel) {
 			itemView.apply {
-				findViewById<AvatarImageView>(R.id.avatar).setText("${userModel.firstName?.get(0)}")
+				findViewById<AvatarImageView>(R.id.avatar).setText(
+					"${userModel.firstName?.get(0)}",
+					((userModel.id ?: 0) % 255).toInt()
+				)
 				findViewById<TextView>(R.id.name).text =
 					"${userModel.firstName} ${userModel.lastName}"
 			}

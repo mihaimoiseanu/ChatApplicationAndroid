@@ -19,6 +19,9 @@ interface UserService {
 	@GET("users")
 	suspend fun getUsers(@Query("search_term") searchTerm: String? = null): List<UserResponse>
 
+	@GET("users/{id}")
+	suspend fun getUser(@Path("id") userId: Long): UserResponse
+
 	@GET("users/friendships")
 	suspend fun getFriendships(@Query("status") status: FriendshipStatus? = null): List<FriendshipResponse>
 

@@ -45,15 +45,19 @@ class RoomsAdapter(
 
 	inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+		private val avatar = itemView.findViewById<AvatarImageView>(R.id.avatar)
+		private val name = itemView.findViewById<TextView>(R.id.name)
+		private val lastMessage = itemView.findViewById<TextView>(R.id.last_message)
+
 		@SuppressLint("SetTextI18n")
 		fun bindView(roomModel: RoomModel) {
 			val otherUser =
 				roomModel.users?.find { it.id != thisUserId } ?: throw Exception("WTF happened")
-			itemView.apply {
-				findViewById<AvatarImageView>(R.id.avatar).setText("${otherUser.firstName?.get(0)}")
-				findViewById<TextView>(R.id.name).text =
-					"${otherUser.firstName} ${otherUser.lastName}"
-			}
+			avatar.setText("${otherUser.firstName?.get(0)}", ((otherUser.id ?: 0) % 255).toInt())
+			name.text = "${otherUser.firstName} ${otherUser.lastName}"
+			lastMessage.text = "${if (roomModel.lastMessage?.sender == thisUserId) {
+				"You:"
+			} else ""}${roomModel.lastMessage?.message ?: ""}"
 			itemView.setOnClickListener {
 				onItemClicked(roomModel)
 			}

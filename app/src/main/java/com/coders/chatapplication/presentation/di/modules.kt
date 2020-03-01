@@ -1,5 +1,6 @@
 package com.coders.chatapplication.presentation.di
 
+import com.coders.chatapplication.presentation.sync.manager.SyncManager
 import com.coders.chatapplication.presentation.ui.chat.ChatViewModel
 import com.coders.chatapplication.presentation.ui.login.LoginViewModel
 import com.coders.chatapplication.presentation.ui.profile.ProfileViewModel
@@ -36,7 +37,7 @@ val presentationModule = module {
 	}
 
 	viewModel {
-		FriendRequestViewModel(get(), get(), get())
+		FriendRequestViewModel(get(), get(), get(), get())
 	}
 
 	viewModel {
@@ -45,5 +46,9 @@ val presentationModule = module {
 
 	viewModel {
 		SplashViewModel(get())
+	}
+
+	single {
+		SyncManager(get(), get(), get())
 	}
 }

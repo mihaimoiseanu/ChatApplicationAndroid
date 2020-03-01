@@ -14,12 +14,20 @@ abstract class ConnectionProvider : CoroutineScope {
 	override val coroutineContext: CoroutineContext
 		get() = Dispatchers.IO + parentJob
 
-	val lifecycleChannel = Channel<LifecycleEvent>(Channel.UNLIMITED)
-	val messageChannel = Channel<String>(Channel.UNLIMITED)
+	var lifecycleChannel = Channel<LifecycleEvent>(Channel.UNLIMITED)
+	var messageChannel = Channel<String>(Channel.UNLIMITED)
 
 	abstract val isConnected: Boolean
 
-	abstract fun createWebSocketConnection()
+	open fun createWebSocketConnection() {
+		if (lifecycleChannel.isClosedForSend) {
+			lifecycleChannel = Channel<LifecycleEvent>(Channel.UNLIMITED)
+		}
+		if (messageChannel.isClosedForSend) {
+			messageChannel = Channel<String>(Channel.UNLIMITED)
+		}
+	}
+
 	abstract fun sendMessage(message: String)
 	abstract fun disconnect()
 

@@ -24,13 +24,15 @@ class OkHttpConnectionProvider(
 	private var openSocket: WebSocket? = null
 
 	override fun createWebSocketConnection() {
+		super.createWebSocketConnection()
 		launch {
 			val requestBuilder = Request.Builder().url(uri)
 			connectHttpHeaders.forEach { (key, value) ->
 				requestBuilder.addHeader(key, value)
 			}
 
-			openSocket = okHttpClient.newWebSocket(requestBuilder.build(), object : WebSocketListener() {
+			openSocket =
+				okHttpClient.newWebSocket(requestBuilder.build(), object : WebSocketListener() {
 
 					override fun onOpen(webSocket: WebSocket, response: Response) {
 						logger.debug("WebSocket opened")
@@ -71,6 +73,7 @@ class OkHttpConnectionProvider(
 						response: Response?
 					) {
 						logger.error("WebSocket error: ${t.localizedMessage} $response")
+						openSocket = null
 						launch {
 							lifecycleChannel.send(
 								LifecycleEvent(
@@ -80,7 +83,6 @@ class OkHttpConnectionProvider(
 							)
 						}
 						handleLifecycle(LifecycleEvent(LifecycleEvent.Type.CLOSED))
-						openSocket = null
 					}
 				})
 		}
@@ -95,11 +97,11 @@ class OkHttpConnectionProvider(
 		}
 	}
 
-	private fun handleLifecycle(lifecycleEvent: LifecycleEvent){
+	private fun handleLifecycle(lifecycleEvent: LifecycleEvent) {
 		launch { lifecycleChannel.send(lifecycleEvent) }
 	}
 
-	private fun handleMessage(message:String){
+	private fun handleMessage(message: String) {
 		launch { messageChannel.send(message) }
 	}
 

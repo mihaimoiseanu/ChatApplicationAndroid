@@ -11,5 +11,7 @@ interface MessageRepository {
 
 	suspend fun deleteMessage(messageModel: MessageModel)
 
+	suspend fun deleteMessages(roomId: Long)
+
 	suspend fun updateMessages(roomId: Long)
 }

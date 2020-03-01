@@ -1,4 +1,4 @@
-package com.coders.chatapplication.data.repository.chat
+package com.coders.chatapplication.data.repository.message
 
 import com.coders.chatapplication.data.db.messages.MessageDao
 import com.coders.chatapplication.data.db.messages.MessageEntity
@@ -34,6 +34,7 @@ class MessageRepositoryImpl(
 		messageDao.insert(
 			messageModel.asEntity()
 		)
+
 	}
 
 	override suspend fun deleteMessage(messageModel: MessageModel) {
@@ -47,5 +48,9 @@ class MessageRepositoryImpl(
 			MessageEntity(it.id!!, it.message!!, it.sentAt!!, roomId, it.senderId!!)
 		}
 		messageDao.insert(*(messages.toTypedArray()))
+	}
+
+	override suspend fun deleteMessages(roomId: Long) {
+		messageDao.delete(roomId)
 	}
 }

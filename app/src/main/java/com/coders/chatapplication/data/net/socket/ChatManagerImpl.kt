@@ -2,7 +2,6 @@ package com.coders.chatapplication.data.net.socket
 
 import com.coders.chatapplication.data.di.BASE_URL
 import com.coders.chatapplication.data.net.asDomain
-import com.coders.chatapplication.data.net.asResponse
 import com.coders.chatapplication.data.net.models.Event
 import com.coders.chatapplication.data.net.models.EventDTO
 import com.coders.chatapplication.data.net.models.EventType
@@ -10,9 +9,10 @@ import com.coders.chatapplication.data.net.models.FriendshipResponse
 import com.coders.chatapplication.data.net.models.MessageResponse
 import com.coders.chatapplication.data.net.models.RoomResponse
 import com.coders.chatapplication.data.sharedprefs.SharedPrefs
-import com.coders.chatapplication.domain.model.MessageModel
 import com.coders.chatapplication.domain.repository.ChatManager
+import com.coders.chatapplication.domain.repository.FriendshipRepository
 import com.coders.chatapplication.domain.repository.MessageRepository
+import com.coders.chatapplication.domain.repository.RoomRepository
 import com.coders.stompclient.Stomp
 import com.coders.stompclient.provider.ConnectionProvider
 import com.google.gson.Gson
@@ -21,7 +21,6 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -35,7 +34,9 @@ class ChatManagerImpl(
 	okHttpClient: OkHttpClient,
 	private val gson: Gson,
 	private val sharedPrefs: SharedPrefs,
-	private val messageRepository: MessageRepository
+	private val messageRepository: MessageRepository,
+	private val roomRepository: RoomRepository,
+	private val friendshipRepository: FriendshipRepository
 ) : CoroutineScope, ChatManager {
 
 	override val coroutineContext: CoroutineContext
@@ -53,11 +54,6 @@ class ChatManagerImpl(
 		stompClient.connectionChannel.consumeAsFlow().onEach {
 			if (it) {
 				subscribeForEvents()
-			} else {
-				launch {
-					delay(3_000)
-					connect()
-				}
 			}
 		}.launchIn(this)
 	}
@@ -109,11 +105,7 @@ class ChatManagerImpl(
 		stompClient.unsubscribePath("/events-replay/$userId")
 	}
 
-	override fun sendMessage(roomId: Long, messageModel: MessageModel) {
-		sendEvent(EventType.MESSAGE_CREATED, messageModel.asResponse())
-	}
-
-	private fun sendEvent(type: EventType, eventDTO: EventDTO) {
+	override fun sendEvent(type: EventType, eventDTO: EventDTO) {
 		stompClient.send(
 			"/events/$userId",
 			gson.toJson(Event(type, eventDTO))
@@ -124,17 +116,44 @@ class ChatManagerImpl(
 		stompClient.disconnect()
 	}
 
-	private suspend fun handleEventReceived(event: Event<EventDTO>) {
+	private fun handleEventReceived(event: Event<EventDTO>) {
 		when (event.type) {
-			EventType.FRIENDSHIP_CREATED -> TODO()
-			EventType.FRIENDSHIP_UPDATED -> TODO()
-			EventType.FRIENDSHIP_DELETED -> TODO()
-			EventType.ROOM_CREATED -> TODO()
-			EventType.ROOM_UPDATED -> TODO()
-			EventType.ROOM_DELETED -> TODO()
-			EventType.MESSAGE_CREATED -> messageRepository.insertMessage((event.eventDTO as MessageResponse).asDomain())
-			EventType.MESSAGE_UPDATED -> messageRepository.insertMessage((event.eventDTO as MessageResponse).asDomain())
-			EventType.MESSAGE_DELETED -> messageRepository.deleteMessage((event.eventDTO as MessageResponse).asDomain())
+			EventType.FRIENDSHIP_CREATED -> launch {
+				val friendship = event.eventDTO as FriendshipResponse
+				friendshipRepository.insertFriendship(friendship.asDomain())
+			}
+			EventType.FRIENDSHIP_UPDATED -> launch {
+				val friendship = event.eventDTO as FriendshipResponse
+				friendshipRepository.updateFriendship(friendship.asDomain())
+			}
+			EventType.FRIENDSHIP_DELETED -> launch {
+				val friendship = event.eventDTO as FriendshipResponse
+				friendshipRepository.deleteFriendship(friendship.asDomain())
+			}
+			EventType.ROOM_CREATED -> launch {
+				val room = event.eventDTO as RoomResponse
+				roomRepository.insertRoom(room.asDomain())
+			}
+			EventType.ROOM_UPDATED -> launch {
+				val room = event.eventDTO as RoomResponse
+				roomRepository.updateRoom(room.asDomain())
+			}
+			EventType.ROOM_DELETED -> launch {
+				val room = event.eventDTO as RoomResponse
+				roomRepository.deleteRoom(room.asDomain())
+			}
+			EventType.MESSAGE_CREATED -> {
+				val message = event.eventDTO as MessageResponse
+				launch { messageRepository.insertMessage(message.asDomain()) }
+				launch {
+					roomRepository.updateRoomLastMessage(
+						message.roomId!!,
+						message.id!!
+					)
+				}
+			}
+			EventType.MESSAGE_UPDATED -> launch { messageRepository.insertMessage((event.eventDTO as MessageResponse).asDomain()) }
+			EventType.MESSAGE_DELETED -> launch { messageRepository.deleteMessage((event.eventDTO as MessageResponse).asDomain()) }
 		}
 	}
 }

@@ -8,7 +8,7 @@ import retrofit2.http.Path
 interface RoomsService {
 
 	@GET("rooms")
-	suspend fun getMyRooms(): List<RoomResponse>
+	suspend fun getRooms(): List<RoomResponse>
 
 	@GET("rooms/{id}/messages")
 	suspend fun getRoomMessages(@Path("id") roomId: Long): List<MessageResponse>

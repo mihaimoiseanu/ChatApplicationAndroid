@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.coders.chatapplication.commons.domain.usecase.NoParams
 import com.coders.chatapplication.domain.model.RoomModel
 import com.coders.chatapplication.domain.usecase.rooms.GetRoomsUseCase
-import com.coders.chatapplication.domain.usecase.rooms.UpdatePublicRoomsUseCase
+import com.coders.chatapplication.domain.usecase.rooms.UpdateRoomsUseCase
 import com.coders.chatapplication.presentation.commons.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 
 class RoomsViewModel(
 	private val getRoomWithUsersUseCase: GetRoomsUseCase,
-	private val updatePublicRoomsUseCase: UpdatePublicRoomsUseCase
+	private val updateRoomsUseCase: UpdateRoomsUseCase
 ) : BaseViewModel() {
 
 	val onRoomsReceived = MutableLiveData<List<RoomModel>>()
@@ -33,7 +33,7 @@ class RoomsViewModel(
 	fun updateRooms() {
 		viewModelScope.launch {
 			withContext(Dispatchers.IO) {
-				updatePublicRoomsUseCase(this, NoParams) {
+				updateRoomsUseCase(this, NoParams) {
 					it.either(::handleFailure, ::handleUpdateSuccess)
 				}
 			}
