@@ -1,5 +1,6 @@
 package com.coders.chatapplication.presentation.ui.login
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.coders.chatapplication.domain.model.UserModel
@@ -9,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class LoginViewModel(
+class LoginViewModel @ViewModelInject constructor(
 	private val loginUseCase: LoginUseCase
 ) : BaseViewModel() {
 

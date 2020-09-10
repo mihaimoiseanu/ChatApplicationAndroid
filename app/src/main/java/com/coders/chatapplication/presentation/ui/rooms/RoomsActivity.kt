@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -19,83 +19,87 @@ import com.coders.chatapplication.presentation.ui.chat.ChatActivity
 import com.coders.chatapplication.presentation.ui.requests.FriendRequestActivity
 import com.coders.chatapplication.presentation.ui.searchfriends.SearchFriendsActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import org.koin.android.ext.android.inject
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class RoomsActivity : AppCompatActivity() {
 
-	private val roomList by bindView<RecyclerView>(R.id.room_list)
-	private val toolbar by bindView<Toolbar>(R.id.toolbar)
+    private val roomList by bindView<RecyclerView>(R.id.room_list)
+    private val toolbar by bindView<Toolbar>(R.id.toolbar)
 
-	private val sharedPrefs by inject<SharedPrefs>()
-	private val roomsAdapter by lazy {
-		RoomsAdapter(::onRoomClicked, sharedPrefs.userId)
-	}
-	private val addRoomButton by bindView<FloatingActionButton>(R.id.create_room_btn)
-	private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refresh_layout)
+    @Inject
+    lateinit var sharedPrefs: SharedPrefs
 
-	private val roomViewModel by viewModel<RoomsViewModel>()
+    private val roomsAdapter by lazy {
+        RoomsAdapter(::onRoomClicked, sharedPrefs.userId)
+    }
+    private val addRoomButton by bindView<FloatingActionButton>(R.id.create_room_btn)
+    private val refreshLayout by bindView<SwipeRefreshLayout>(R.id.refresh_layout)
 
-	override fun onCreate(savedInstanceState: Bundle?) {
-		super.onCreate(savedInstanceState)
-		setContentView(R.layout.activity_rooms)
+    private val roomViewModel by viewModels<RoomsViewModel>()
 
-		setSupportActionBar(toolbar)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_rooms)
 
-		roomList.layoutManager = LinearLayoutManager(this)
-		roomList.adapter = roomsAdapter
+        setSupportActionBar(toolbar)
 
-		addRoomButton.setOnClickListener {
-			startActivity(Intent(this, SearchFriendsActivity::class.java))
-		}
+        roomList.layoutManager = LinearLayoutManager(this)
+        roomList.adapter = roomsAdapter
 
-		roomViewModel.onRoomsReceived.observe(this, Observer {
-			roomsAdapter.update(it)
-		})
+        addRoomButton.setOnClickListener {
+            startActivity(Intent(this, SearchFriendsActivity::class.java))
+        }
 
-		roomViewModel.onUpdateRoomSuccess.observe(this, Observer {
-			refreshLayout.isRefreshing = false
-		})
+        roomViewModel.onRoomsReceived.observe(this, {
+            roomsAdapter.update(it)
+        })
 
-		roomViewModel.failure.observe(this, Observer {
-			toastIt(it.exception.message ?: "Error")
-			refreshLayout.isRefreshing = false
-		})
+        roomViewModel.onUpdateRoomSuccess.observe(this, {
+            refreshLayout.isRefreshing = false
+        })
 
-		refreshLayout.setOnRefreshListener {
-			roomViewModel.updateRooms()
-		}
+        roomViewModel.failure.observe(this, {
+            toastIt(it.exception.message ?: "Error")
+            refreshLayout.isRefreshing = false
+        })
 
-		roomViewModel.getRooms()
-		roomViewModel.updateRooms()
-	}
+        refreshLayout.setOnRefreshListener {
+            roomViewModel.updateRooms()
+        }
 
-	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-		menuInflater.inflate(R.menu.room_menu, menu)
-		return true
-	}
+        roomViewModel.getRooms()
+        roomViewModel.updateRooms()
+    }
 
-	override fun onOptionsItemSelected(item: MenuItem): Boolean {
-		return when (item.itemId) {
-			R.id.requests -> {
-				startActivity(Intent(this, FriendRequestActivity::class.java))
-				true
-			}
-			else -> super.onOptionsItemSelected(item)
-		}
-	}
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.room_menu, menu)
+        return true
+    }
 
-	private fun onRoomClicked(roomModel: RoomModel) {
-		startActivity(
-			Intent(this, ChatActivity::class.java).apply {
-				putExtra("room_id", roomModel.id)
-				putExtra(
-					"room_name",
-					roomModel.users?.filter { it.id != sharedPrefs.userId }?.map { it.firstName }?.joinToString(
-						separator = ","
-					)
-				)
-			}
-		)
-	}
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.requests -> {
+                startActivity(Intent(this, FriendRequestActivity::class.java))
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun onRoomClicked(roomModel: RoomModel) {
+        startActivity(
+            Intent(this, ChatActivity::class.java).apply {
+                putExtra("room_id", roomModel.id)
+                putExtra(
+                    "room_name",
+                    roomModel.users?.filter { it.id != sharedPrefs.userId }?.map { it.firstName }
+                        ?.joinToString(
+                            separator = ","
+                        )
+                )
+            }
+        )
+    }
 }

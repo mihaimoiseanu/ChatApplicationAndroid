@@ -1,5 +1,6 @@
 package com.coders.chatapplication.presentation.ui.profile
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.coders.chatapplication.data.sharedprefs.SharedPrefs
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-class ProfileViewModel(
+class ProfileViewModel @ViewModelInject constructor(
 	private val getFriendshipUseCase: GetFriendshipUseCase,
 	private val requestFriendshipUseCase: RequestFriendshipUseCase,
 	private val updateFriendshipUseCase: UpdateFriendshipUseCase,

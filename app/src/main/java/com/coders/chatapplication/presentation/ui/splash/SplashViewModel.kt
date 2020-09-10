@@ -1,5 +1,6 @@
 package com.coders.chatapplication.presentation.ui.splash
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.coders.chatapplication.commons.domain.usecase.NoParams
@@ -10,7 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class SplashViewModel(
+class SplashViewModel @ViewModelInject constructor(
 	private val checkSessionUseCase: CheckSessionUseCase
 ) : BaseViewModel() {
 

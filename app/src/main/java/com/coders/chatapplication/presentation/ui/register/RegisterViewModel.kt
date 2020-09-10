@@ -1,5 +1,6 @@
 package com.coders.chatapplication.presentation.ui.register
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.coders.chatapplication.domain.model.UserModel
@@ -8,7 +9,7 @@ import com.coders.chatapplication.presentation.commons.BaseViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class RegisterViewModel(
+class RegisterViewModel @ViewModelInject constructor(
 	private val registerUseCase: RegisterUseCase
 ) : BaseViewModel() {
 

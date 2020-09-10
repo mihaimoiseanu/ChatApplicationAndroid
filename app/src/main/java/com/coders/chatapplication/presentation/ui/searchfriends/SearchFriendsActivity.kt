@@ -3,10 +3,10 @@ package com.coders.chatapplication.presentation.ui.searchfriends
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -15,11 +15,12 @@ import com.coders.chatapplication.domain.model.UserModel
 import com.coders.chatapplication.presentation.commons.bindView
 import com.coders.chatapplication.presentation.commons.toastIt
 import com.coders.chatapplication.presentation.ui.profile.ProfileActivity
-import org.koin.androidx.viewmodel.ext.android.viewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFriendsActivity : AppCompatActivity() {
 
-	private val viewModel by viewModel<SearchFriendsViewModel>()
+	private val viewModel by viewModels<SearchFriendsViewModel>()
 	private val friendsList by bindView<RecyclerView>(R.id.users_list)
 	private val toolbar by bindView<Toolbar>(R.id.toolbar)
 	private val swipeRefreshLayout by bindView<SwipeRefreshLayout>(R.id.refresh_layout)
@@ -37,12 +38,12 @@ class SearchFriendsActivity : AppCompatActivity() {
 		friendsList.layoutManager = LinearLayoutManager(this)
 		friendsList.adapter = friendsAdapter
 
-		viewModel.failure.observe(this, Observer {
+		viewModel.failure.observe(this, {
 			swipeRefreshLayout.isRefreshing = false
 			toastIt(it.exception.localizedMessage ?: "Error")
 		})
 
-		viewModel.searchedUsers.observe(this, Observer {
+		viewModel.searchedUsers.observe(this, {
 			swipeRefreshLayout.isRefreshing = false
 			friendsAdapter.update(it)
 		})

@@ -2,12 +2,8 @@ package com.coders.stompclient
 
 import com.coders.stompclient.provider.ConnectionProvider
 import com.coders.stompclient.provider.OkHttpConnectionProvider
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import okhttp3.OkHttpClient
 
-@ExperimentalCoroutinesApi
-@FlowPreview
 object Stomp {
 
 	fun over(

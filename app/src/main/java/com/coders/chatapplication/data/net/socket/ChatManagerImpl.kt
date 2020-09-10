@@ -1,13 +1,8 @@
 package com.coders.chatapplication.data.net.socket
 
-import com.coders.chatapplication.data.di.BASE_URL
+import com.coders.chatapplication.data.di.NetworkModule.BASE_URL
 import com.coders.chatapplication.data.net.asDomain
-import com.coders.chatapplication.data.net.models.Event
-import com.coders.chatapplication.data.net.models.EventDTO
-import com.coders.chatapplication.data.net.models.EventType
-import com.coders.chatapplication.data.net.models.FriendshipResponse
-import com.coders.chatapplication.data.net.models.MessageResponse
-import com.coders.chatapplication.data.net.models.RoomResponse
+import com.coders.chatapplication.data.net.models.*
 import com.coders.chatapplication.data.sharedprefs.SharedPrefs
 import com.coders.chatapplication.domain.repository.ChatManager
 import com.coders.chatapplication.domain.repository.FriendshipRepository
@@ -29,7 +24,6 @@ import kotlinx.coroutines.launch
 import okhttp3.OkHttpClient
 import kotlin.coroutines.CoroutineContext
 
-@Suppress("EXPERIMENTAL_API_USAGE")
 class ChatManagerImpl(
 	okHttpClient: OkHttpClient,
 	private val gson: Gson,

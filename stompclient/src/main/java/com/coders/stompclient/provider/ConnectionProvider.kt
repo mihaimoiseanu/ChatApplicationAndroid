@@ -21,10 +21,10 @@ abstract class ConnectionProvider : CoroutineScope {
 
 	open fun createWebSocketConnection() {
 		if (lifecycleChannel.isClosedForSend) {
-			lifecycleChannel = Channel<LifecycleEvent>(Channel.UNLIMITED)
+			lifecycleChannel = Channel(Channel.UNLIMITED)
 		}
 		if (messageChannel.isClosedForSend) {
-			messageChannel = Channel<String>(Channel.UNLIMITED)
+			messageChannel = Channel(Channel.UNLIMITED)
 		}
 	}
 

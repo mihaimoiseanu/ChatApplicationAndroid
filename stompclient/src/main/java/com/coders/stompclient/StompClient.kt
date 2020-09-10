@@ -8,28 +8,16 @@ import com.coders.stompclient.dto.StompMessage.Companion.from
 import com.coders.stompclient.pathmatcher.PathMatcher
 import com.coders.stompclient.pathmatcher.SimplePathMatcher
 import com.coders.stompclient.provider.ConnectionProvider
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.*
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.consumeAsFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.coroutines.CoroutineContext
 
 
-@FlowPreview
-@ExperimentalCoroutinesApi
 class StompClient(
 	private val connectionProvider: ConnectionProvider,
 	private val pathMatcher: PathMatcher = SimplePathMatcher()

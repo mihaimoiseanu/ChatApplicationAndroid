@@ -1,5 +1,6 @@
 package com.coders.chatapplication.presentation.ui.requests
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.coders.chatapplication.commons.domain.usecase.NoParams
@@ -16,7 +17,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-class FriendRequestViewModel(
+class FriendRequestViewModel @ViewModelInject constructor(
 	private val updateFriendshipDBUseCase: UpdateFriendshipDBUseCase,
 	private val getFriendRequestsUseCase: GetFriendRequestsUseCase,
 	private val updateFriendshipUseCase: UpdateFriendshipUseCase,

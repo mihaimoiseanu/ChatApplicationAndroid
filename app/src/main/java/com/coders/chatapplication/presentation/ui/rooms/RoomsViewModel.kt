@@ -1,5 +1,6 @@
 package com.coders.chatapplication.presentation.ui.rooms
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.coders.chatapplication.commons.domain.usecase.NoParams
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class RoomsViewModel(
+class RoomsViewModel @ViewModelInject constructor(
 	private val getRoomWithUsersUseCase: GetRoomsUseCase,
 	private val updateRoomsUseCase: UpdateRoomsUseCase
 ) : BaseViewModel() {

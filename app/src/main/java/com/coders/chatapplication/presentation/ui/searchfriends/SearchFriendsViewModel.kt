@@ -1,5 +1,6 @@
 package com.coders.chatapplication.presentation.ui.searchfriends
 
+import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.coders.chatapplication.domain.model.UserModel
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-class SearchFriendsViewModel(
+class SearchFriendsViewModel @ViewModelInject constructor(
 	private val searchUsersUseCase: SearchUsersUseCase
 ) : BaseViewModel() {
 
